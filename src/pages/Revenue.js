@@ -36,7 +36,7 @@ function Revenue() {
                 <td>{item.revenue}</td>
                 <td>{formattedDate}</td>
                 <td>
-                    <Link to="" className="btn btn-success">Edit</Link>
+                    <Link to={`/revenues/${item.id}/edit`} className="btn btn-success">Edit</Link>
                 </td>
                 <td>
                     <button className="btn btn-danger">Delete</button>

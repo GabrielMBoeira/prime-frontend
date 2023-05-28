@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../components/Loading';
 
-function RevenueCreate() {
+function RevenueEdit() {
 
-    const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
+    const { id } = useParams();
+
+    const [loading, setLoading] = useState(true)
     const [inputErrorList, setInputErrorList] = useState({})
-    const [revenue, setRevenue] = useState({
-        description: '',
-        revenue: '',
-        dateIni: ''
-    })
+    const [revenue, setRevenue] = useState({})
 
     const handleInput = (e) => {
         e.persist();
         setRevenue({ ...revenue, [e.target.name]: e.target.value })
     }
 
-    const saveRevenue = (e) => {
+    useEffect(() => {
+
+        axios.get(`http://localhost:8000/api/revenues/${id}/edit`).then(res => {
+            setRevenue(res.data.revenue)
+            setLoading(false)
+        })
+            .catch(function (error) {
+
+                if (error.response) {
+
+                    if (error.response.status === 404) {
+                        alert(error.response.data.message)
+                        setLoading(false);
+                    }
+
+                    if (error.response.status === 500) {
+                        alert(error.response.data)
+                        setLoading(false);
+                    }
+                }
+            });
+
+    }, [id])
+
+    const updateRevenue = (e) => {
 
         e.preventDefault();
         setLoading(true);
@@ -30,22 +51,25 @@ function RevenueCreate() {
             dateIni: revenue.dateIni,
         }
 
-        axios.post(`http://localhost:8000/api/revenues`, data)
+        axios.put(`http://localhost:8000/api/revenues/${id}/edit`, data)
             .then(res => {
 
                 alert(res.data.message)
-                navigate('/revenues')
                 setLoading(false);
-               
+
             })
             .catch(function (error) {
 
                 if (error.response) {
 
                     if (error.response.status === 422) {
-
                         console.log(error.response.data.errors)
                         setInputErrorList(error.response.data.errors)
+                        setLoading(false);
+                    }
+
+                    if (error.response.status === 404) {
+                        alert(error.response.data.message)
                         setLoading(false);
                     }
 
@@ -61,7 +85,15 @@ function RevenueCreate() {
         return (
             <Loading />
         )
-    }   
+    }
+
+    if (Object.keys(revenue).length === 0) {
+        return (
+            <div className="container mt-5">
+                <h4>No Such Revenue Id {id}</h4>
+            </div>
+        )
+    }
 
     return (
         <div className="container mt-5">
@@ -69,12 +101,12 @@ function RevenueCreate() {
                 <div className="col-md-12">
                     <div className="card">
                         <div className="card-header">
-                            <h4>Create Revenues
+                            <h4>Edit Revenue
                                 <Link to="/revenues" className="btn btn-primary float-end">Back</Link>
                             </h4>
                         </div>
                         <div className="card-body">
-                            <form onSubmit={saveRevenue}>
+                            <form onSubmit={updateRevenue}>
                                 <div className="mb-3">
                                     <label className="form-label">Description</label>
                                     <input type="text" className="form-control" name="description" value={revenue.description} onChange={handleInput} />
@@ -104,4 +136,4 @@ function RevenueCreate() {
     )
 }
 
-export default RevenueCreate;
+export default RevenueEdit;
