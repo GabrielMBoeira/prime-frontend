@@ -2,7 +2,10 @@
 .loading {
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.1);
+    font-size: 4rem;
+    font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }

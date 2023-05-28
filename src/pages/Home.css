@@ -1,0 +1,29 @@
+.main {
+    height: 100vh;
+    background-image: url('./../../public/images/home.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .home {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.boxLogin {
+    height: 380px;
+    width: 600px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+}

@@ -1,4 +1,4 @@
-import Style from './Loading.css';
+import './Loading.css';
 
 function Loading() {
 
@@ -8,7 +8,7 @@ function Loading() {
             <div className="spinner-border text-primary d-flex justify-content-center align-items-center" role="status">
                 <span className="visually-hidden">Loading... </span>
             </div>
-            <span>Loading... Please wait.</span>
+            <span className="mx-2">Loading... Please wait.</span>
         </div>
     )
 }
