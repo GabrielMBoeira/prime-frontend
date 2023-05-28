@@ -45,7 +45,7 @@ function Revenue() {
             })
     }
 
-    if(loading) {
+    if (loading) {
         return (
             <Loading />
         )
@@ -55,7 +55,8 @@ function Revenue() {
     let revenueDetails = "";
     revenueDetails = revenues.map((item, index) => {
 
-        const formattedDate = new Date(item.dateIni).toLocaleDateString('pt-BR');
+        let parts = item.dateIni.split("-");
+        let formattedDate = parts[2] + "/" + parts[1] + "/" + parts[0];
 
         return (
             <tr key={index}>
