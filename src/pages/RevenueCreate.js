@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from '../components/Loading';
 
 function RevenueCreate() {
 
-
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const [inputErrorList, setInputErrorList] = useState({})
     const [revenue, setRevenue] = useState({
         description: '',
         revenue: '',
-        date: ''
+        dateIni: ''
     })
 
     const handleInput = (e) => {
@@ -27,25 +27,31 @@ function RevenueCreate() {
         const data = {
             description: revenue.description,
             revenue: revenue.revenue,
-            date: revenue.date,
+            dateIni: revenue.dateIni,
         }
 
-        axios.post(`http://localhost:8000/api/revenue`)
+        axios.post(`http://localhost:8000/api/revenues`, data)
             .then(res => {
+
                 alert(res.data.message)
+                navigate('/revenues')
+                setLoading(false);
+               
             })
             .catch(function (error) {
 
                 if (error.response) {
 
                     if (error.response.status === 422) {
-                        setInputErrorList(error.response.data.setInputErrorList)
-                        setLoading(true);
+
+                        console.log(error.response.data.errors)
+                        setInputErrorList(error.response.data.errors)
+                        setLoading(false);
                     }
 
                     if (error.response.status === 500) {
                         alert(error.response.data)
-                        setLoading(true);
+                        setLoading(false);
                     }
                 }
             })
@@ -82,8 +88,8 @@ function RevenueCreate() {
                                     </div>
                                     <div className="mb-3 col-md-4">
                                         <label className="form-label" >Date</label>
-                                        <input type="date" className="form-control" name="date" value={revenue.date} onChange={handleInput} />
-                                        <small className='text-danger'>{inputErrorList.date}</small>
+                                        <input type="date" className="form-control" name="dateIni" value={revenue.dateIni} onChange={handleInput} />
+                                        <small className='text-danger'>{inputErrorList.dateIni}</small>
                                     </div>
                                 </div>
                                 <div className="d-flex justify-content-center">

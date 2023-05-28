@@ -10,11 +10,9 @@ function Revenue() {
 
     useEffect(() => {
 
-        axios.get(`http://localhost:8000/api/revenue`).then(res => {
-
+        axios.get(`http://localhost:8000/api/revenues`).then(res => {
             setRevenues(res.data.revenues)
             setLoading(false)
-
         });
 
     }, [])
